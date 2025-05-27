@@ -1,0 +1,28 @@
+-- High level --
+
+1. Needs to be stateless
+2. Object types
+    a. Tree object to keep track of directory structure
+    b. Commit object to keep track of commits
+    c. Reference object
+3. .kr_git file structure
+    .kr_git
+    |
+    |---> commits
+    |---> trees
+    |---> HEAD file
+4. Hashing system
+    a. Hash each object file (after it is written) using MD5 and that is its identifier
+5. Race conditions
+    a. init needs to be a transaction
+    b. commit needs to be a transaction
+
+-- Commands --
+1. init
+    a. Create .kr_git repo
+    b. Create initial tree object
+    c. Create initial commit object
+    d. Create HEAD
+2. commit
+    a. starting at the root directory, recreate all the trees and blobs
+    b. create a commit object that points to the new tree
