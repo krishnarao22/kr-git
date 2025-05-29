@@ -7,13 +7,13 @@ def handle_arguments(args: list[str]):
 
     assert(len(args) > 1), "kr-git requires at least one argument!"
 
-    if sys.argv[1] == 'init':
+    if args[1] == 'init':
         cmd.init_kr_git_repo()
-    elif sys.argv[1] == 'commit':
+    elif args[1] == 'commit':
         cmd.make_commit()
-    elif sys.argv[1] == 'restore':
-        assert(len(args) == 2), "For restore, please supply a path in which to restore to (and no other extra arguments)"
-
+    elif args[1] == 'restore':
+        assert(len(args) == 3), "For restore, please supply a path in which to restore to (and no other extra arguments)"
+        cmd.restore(args[2])
 
 if __name__ == '__main__':
 

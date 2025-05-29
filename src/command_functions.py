@@ -4,6 +4,7 @@ from classes.utils import find_kr_git_root
 from classes.gittree import GitTree
 from classes.gitcommit import GitCommit
 from classes.gitref import GitRef
+from classes.gitrestore import GitRestore
 
 def init_kr_git_repo() -> None:
     '''
@@ -31,4 +32,9 @@ def make_commit() -> None:
     head_file_path: str = os.path.join(kr_git_root_path, 'HEAD')
     with open(head_file_path, 'w', encoding='utf8') as head_file:
         head_file.write(f'main@{current_ref_obj.target_commit_sha1}')
+    
+def restore(restore_path: str) -> None:
+    curr_git_restore_obj: GitRestore = GitRestore(restore_path)
+    curr_git_restore_obj.restore()
+
 
