@@ -66,7 +66,7 @@ class GitTree(GitObject):
         out_git_tree.directory_name = dir_name
         body = uncompressed_contents[null_byte_idx + 1:].decode()
 
-        print(body)
+        # print(body)
 
         for entry_line in body.split('\n')[:-1]:
             file_name, entry_type_str, file_sha1 = entry_line.split()
@@ -103,7 +103,7 @@ class GitTree(GitObject):
     def init_from_directory(cls, directory_path: str, write_trees: bool) -> GitTree:
         curr_tree: GitTree = GitTree()
         curr_tree.directory_name = os.path.basename(os.path.normpath(directory_path))
-        print(curr_tree.directory_name)
+        # print(curr_tree.directory_name)
         for name in os.listdir(directory_path):
             #TODO: implement a more comprehensive check of files and folders to ignore
             if name == '.kr_git':
