@@ -69,7 +69,7 @@ class GitBlob(GitObject):
 
         Args:
             cls: the GitBlob class
-            target_file_path: the file path of the file to create a GitBlob object out of.
+            target_file_path (str): the file path of the file to create a GitBlob object out of.
         
         Returns:
             GitBlob: the complete GitBlob object from the target file
@@ -97,3 +97,9 @@ class GitBlob(GitObject):
         file_path_arr: list[str] = file_path.split('/')
         out_gitblob_obj.sha1 = file_path_arr[-2] + file_path_arr[-1]
         return out_gitblob_obj
+
+    @classmethod
+    def init_gitblob_from_blob_hash(cls, blob_hash: str) -> GitBlob:
+        kr_git_root_path: str = find_kr_git_root(Path.cwd())
+        target_blob_file_path: str = os.path.join(kr_git_root_path, 'blobs', blob_hash[:2], blob_hash[2:])
+        return cls.init_gitblob_from_blob_file(target_blob_file_path)

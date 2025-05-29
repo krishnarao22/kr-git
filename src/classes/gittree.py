@@ -43,12 +43,12 @@ class GitTree(GitObject):
     '''
 
     def __init__(self):
-        self.directory_path: str = None
+        self.directory_name: str = None
         self.internal_tree: SortedDict[str, GitTreeEntry] = SortedDict()
         self.sha1 = None
 
     def serialize(self: GitTree) -> bytes:
-        header: bytes = f'TREE {self.directory_path}\0'.encode()
+        header: bytes = f'TREE {self.directory_name}\0'.encode()
         body = bytearray()
         for git_entry in self.internal_tree.values():
             body.extend(
@@ -62,8 +62,8 @@ class GitTree(GitObject):
         uncompressed_contents: bytes = GitTree.deserialize(tree_file_path)
         null_byte_idx: int = uncompressed_contents.find(b'\0')
         header: str = uncompressed_contents[:null_byte_idx].decode()
-        _, dir_path = header.split()
-        out_git_tree.directory_path = dir_path
+        _, dir_name = header.split()
+        out_git_tree.directory_name = dir_name
         body = uncompressed_contents[null_byte_idx + 1:].decode()
 
         print(body)
@@ -78,6 +78,12 @@ class GitTree(GitObject):
         out_git_tree.sha1 = full_tree_sha1
 
         return out_git_tree
+
+    @classmethod
+    def init_from_tree_hash(cls, tree_hash: str) -> GitTree:
+        kr_git_root_path: str = find_kr_git_root(Path.cwd())
+        tree_file_path: str = os.path.join(kr_git_root_path, 'trees', tree_hash[:2], tree_hash[2:])
+        return cls.init_from_tree_file(tree_file_path)
 
     def write_git_tree_to_file(self) -> None:
         kr_git_root: str = find_kr_git_root(Path.cwd())
@@ -96,6 +102,8 @@ class GitTree(GitObject):
     @classmethod
     def init_from_directory(cls, directory_path: str, write_trees: bool) -> GitTree:
         curr_tree: GitTree = GitTree()
+        curr_tree.directory_name = os.path.basename(os.path.normpath(directory_path))
+        print(curr_tree.directory_name)
         for name in os.listdir(directory_path):
             #TODO: implement a more comprehensive check of files and folders to ignore
             if name == '.kr_git':

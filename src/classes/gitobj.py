@@ -12,6 +12,11 @@ class GitObject(ABC):
         with open(file_path, 'rb') as f:
             return zlib.decompress(f.read())
 
-    def hash(self, data: bytes) -> str:
+    @classmethod
+    def hash(cls, data: bytes) -> str:
         return hashlib.sha1(data).hexdigest()
+    
+    @classmethod
+    def compress(cls, data: bytes) -> bytes:
+        return zlib.compress(data)
     

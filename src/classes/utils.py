@@ -24,3 +24,8 @@ def find_kr_git_root(curr_path: Path) -> str:
             return kr_git_path
         curr_path = curr_path.parent
     raise FileNotFoundError('No parent kr_git repository found')
+
+def find_commit_hash_from_head_file(head_path: str) -> str:
+    with open(head_path, 'r') as head_file:
+        head_contents = head_file.read()
+    return head_contents.split('@')[1]

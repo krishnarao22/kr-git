@@ -1,14 +1,24 @@
+#!/usr/bin/env python3
+
 import sys
-from initialization import init_kr_git_repo
+import command_functions as cmd
+
+def handle_arguments(args: list[str]):
+
+    assert(len(args) > 1), "kr-git requires at least one argument!"
+
+    if sys.argv[1] == 'init':
+        cmd.init_kr_git_repo()
+    elif sys.argv[1] == 'commit':
+        cmd.make_commit()
+    elif sys.argv[1] == 'restore':
+        assert(len(args) == 2), "For restore, please supply a path in which to restore to (and no other extra arguments)"
 
 
 if __name__ == '__main__':
 
-    args: list[str] = sys.argv
+    handle_arguments(sys.argv)
 
-    assert(len(args) > 1), "kr-git requires at least one argument!"
 
-    # init case
-    if sys.argv[1] == 'init':
-        init_kr_git_repo()
 
+    
